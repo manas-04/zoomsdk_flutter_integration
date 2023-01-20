@@ -19,7 +19,8 @@ class _JoinWidgetState extends State<JoinWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Join meeting'),
+        title: Text('Zoom SDK Integration'),
+        centerTitle: true,
       ),
       body: Container(
         child: Padding(
