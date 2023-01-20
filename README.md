@@ -5,9 +5,9 @@
 This is a Flutter application that integrates the Zoom SDK provided in a separate git repository. The application allows users to join Zoom meetings using the meeting ID and password.
 
 <h3>Getting Started</h3>
-1. Fork this repository to your local machine.
-2 .Add the Zoom SDK dependency to your pubspec.yaml file. The dependency can be found in the separate git repository.
-3. Run flutter packages get to fetch the dependencies.
+1. Fork this repository to your local machine.</br>
+2 .Add the Zoom SDK dependency to your pubspec.yaml file. The dependency can be found in the separate git repository.</br>
+3. Run flutter packages get to fetch the dependencies.</br>
 
 <h3>Additional Features</h3>
 Please refer to the Zoom SDK documentation for more information and additional features that can be implemented.
