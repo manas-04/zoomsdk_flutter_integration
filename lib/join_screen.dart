@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:zoom/zoom.dart';
+import 'package:zoom_sdk_integration/helper/meeting_helpers.dart';
+import 'package:zoom_sdk_integration/helper/size_helpers.dart';
+import 'package:zoom_sdk_integration/widgets/default_text_box.dart';
 
 class JoinWidget extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ class JoinWidget extends StatefulWidget {
 class _JoinWidgetState extends State<JoinWidget> {
   TextEditingController meetingIdController = TextEditingController();
   TextEditingController meetingPasswordController = TextEditingController();
-  Timer timer;
+  Timer? timer;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,43 +29,96 @@ class _JoinWidgetState extends State<JoinWidget> {
           ),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: TextField(
-                    controller: meetingIdController,
-                    decoration: InputDecoration(
-                      labelText: 'Meeting ID',
-                    )),
+              const SizedBox(
+                height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: TextField(
-                    controller: meetingPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Meeting Password',
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Builder(
-                  builder: (context) {
-                    return ElevatedButton(
-                      onPressed: () => joinMeeting(context),
-                      child: Text('Join'),
-                    );
-                  },
+                child: DefaultTextBox(
+                  hintText: "Meeting ID",
+                  labelText: "Meeting ID",
+                  textColor: Color(0xFF9D9D9D),
+                  icon: const Icon(
+                    Icons.supervised_user_circle,
+                    color: Colors.blue,
+                  ),
+                  textEditingController: meetingIdController,
+                  textInputType: TextInputType.name,
+                  obscureText: false,
+                  enabled: true,
+                  backgroundColor: Color(0xFFFFFFFF),
+                  borderColor: Colors.blue,
+                  showBorder: true,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Builder(
-                  builder: (context) {
-                    return ElevatedButton(
-                      onPressed: () => startMeeting(context),
-                      child: Text('Start Meeting'),
-                    );
-                  },
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: DefaultTextBox(
+                  hintText: "Meeting Password",
+                  labelText: "Meeting Password",
+                  textColor: Color(0xFF9D9D9D),
+                  icon: const Icon(
+                    Icons.password_rounded,
+                    color: Colors.blue,
+                  ),
+                  textEditingController: meetingPasswordController,
+                  textInputType: TextInputType.name,
+                  obscureText: false,
+                  enabled: true,
+                  backgroundColor: Color(0xFFFFFFFF),
+                  borderColor: Colors.blue,
+                  showBorder: true,
                 ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 5,
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: Colors.blue,
+                    ),
+                    borderRadius: BorderRadius.circular(44),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: displayWidth(context) * 0.16,
+                    vertical: displayHeight(context) * 0.02,
+                  ),
+                ),
+                child: Text("Join Meeting"),
+                onPressed: () => joinMeeting(
+                  context: context,
+                  meetingIdController: meetingIdController,
+                  meetingPasswordController: meetingPasswordController,
+                ),
+              ),
+              const SizedBox(
+                height: 18,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 5,
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: Colors.blue,
+                    ),
+                    borderRadius: BorderRadius.circular(44),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: displayWidth(context) * 0.16,
+                    vertical: displayHeight(context) * 0.02,
+                  ),
+                ),
+                onPressed: () => startMeeting(
+                  context: context,
+                  meetingIdController: meetingIdController,
+                  meetingPasswordController: meetingPasswordController,
+                ),
+                child: Text('Start Meeting'),
               ),
             ],
           ),
@@ -71,52 +126,4 @@ class _JoinWidgetState extends State<JoinWidget> {
       ),
     );
   }
-
-  bool _isMeetingEnded(String status) {
-    if (Platform.isAndroid)
-      return status == "MEETING_STATUS_DISCONNECTING" ||
-          status == "MEETING_STATUS_FAILED";
-    return status == "MEETING_STATUS_ENDED";
-  }
-
-  joinMeeting(BuildContext context) {
-    ZoomOptions zoomOptions = new ZoomOptions(
-      domain: "zoom.us",
-      appKey: "fla19uL95BUsT2aBwlvZEhOYRTBV9s7kc0AF",
-      appSecret: "br2ou5QmuVtFzmB805BxyYh2qH17N7uFAnQN",
-    );
-    var meetingOptions = new ZoomMeetingOptions(
-        userId: 'example',
-        meetingId: meetingIdController.text,
-        meetingPassword: meetingPasswordController.text,
-        disableDialIn: "true",
-        disableDrive: "true",
-        disableInvite: "true",
-        disableShare: "true",
-        noAudio: "false",
-        noDisconnectAudio: "false",
-        meetingViewOptions: ZoomMeetingOptions.NO_TEXT_PASSWORD +
-            ZoomMeetingOptions.NO_TEXT_MEETING_ID +
-            ZoomMeetingOptions.NO_BUTTON_PARTICIPANTS);
-    var zoom = Zoom();
-    zoom.init(zoomOptions).then((results) {
-      if (results[0] == 0) {
-        zoom.onMeetingStateChanged.listen((status) {
-          print("Meeting Status Stream: " + status[0] + " - " + status[1]);
-          if (_isMeetingEnded(status[0])) {
-            timer?.cancel();
-          }
-        });
-        zoom.joinMeeting(meetingOptions).then((joinMeetingResult) {
-          timer = Timer.periodic(new Duration(seconds: 2), (timer) {
-            zoom.meetingStatus(meetingOptions.meetingId).then((status) {
-              print("Meeting Status Polling: " + status[0] + " - " + status[1]);
-            });
-          });
-        });
-      }
-    });
-  }
-
-  startMeeting(BuildContext context) {}
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zoom_sdk_integration/join_screen.dart';
 
-void main() {
+Future<void> main() async {
   runApp(MyApp());
 }
 
