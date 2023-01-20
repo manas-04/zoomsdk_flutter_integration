@@ -99,28 +99,28 @@ class _JoinWidgetState extends State<JoinWidget> {
               const SizedBox(
                 height: 18,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 5,
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: Colors.blue,
-                    ),
-                    borderRadius: BorderRadius.circular(44),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: displayWidth(context) * 0.16,
-                    vertical: displayHeight(context) * 0.02,
-                  ),
-                ),
-                onPressed: () => startMeeting(
-                  context: context,
-                  meetingIdController: meetingIdController,
-                  meetingPasswordController: meetingPasswordController,
-                ),
-                child: Text('Start Meeting'),
-              ),
+              // ElevatedButton(
+              //   style: ElevatedButton.styleFrom(
+              //     elevation: 5,
+              //     backgroundColor: Colors.blue,
+              //     shape: RoundedRectangleBorder(
+              //       side: BorderSide(
+              //         color: Colors.blue,
+              //       ),
+              //       borderRadius: BorderRadius.circular(44),
+              //     ),
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: displayWidth(context) * 0.16,
+              //       vertical: displayHeight(context) * 0.02,
+              //     ),
+              //   ),
+              //   onPressed: () => startMeeting(
+              //     context: context,
+              //     meetingIdController: meetingIdController,
+              //     meetingPasswordController: meetingPasswordController,
+              //   ),
+              //   child: Text('Start Meeting'),
+              // ),
             ],
           ),
         ),

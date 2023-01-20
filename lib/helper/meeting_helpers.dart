@@ -25,7 +25,7 @@ joinMeeting({
       appSecret: "br2ou5QmuVtFzmB805BxyYh2qH17N7uFAnQN",
     );
     var meetingOptions = new ZoomMeetingOptions(
-      userId: 'example',
+      userId: 'Example',
       meetingId: meetingIdController.text,
       meetingPassword: meetingPasswordController.text,
       disableDialIn: "true",
@@ -69,58 +69,60 @@ joinMeeting({
   }
 }
 
-startMeeting({
-  required BuildContext context,
-  required TextEditingController meetingIdController,
-  required TextEditingController meetingPasswordController,
-}) {
-  bool _isMeetingEnded(String status) {
-    var result = false;
-    if (Platform.isAndroid) {
-      result = status == "MEETING_STATUS_DISCONNECTING" ||
-          status == "MEETING_STATUS_FAILED";
-    } else {
-      result = status == "MEETING_STATUS_IDLE";
-    }
+/// Got it
 
-    return result;
-  }
+// startMeeting({
+//   required BuildContext context,
+//   required TextEditingController meetingIdController,
+//   required TextEditingController meetingPasswordController,
+// }) {
+//   bool _isMeetingEnded(String status) {
+//     var result = false;
+//     if (Platform.isAndroid) {
+//       result = status == "MEETING_STATUS_DISCONNECTING" ||
+//           status == "MEETING_STATUS_FAILED";
+//     } else {
+//       result = status == "MEETING_STATUS_IDLE";
+//     }
 
-  ZoomOptions zoomOptions = ZoomOptions(
-    domain: "zoom.us",
-    appKey:
-        "XKE4uWfeLwWEmh78YMbC6mqKcF8oM4YHTr9I", //API KEY FROM ZOOM -- SDK KEY
-    appSecret:
-        "bT7N61pQzaLXU6VLj9TVl7eYuLbqAiB0KAdb", //API SECRET FROM ZOOM -- SDK SECRET
-  );
+//     return result;
+//   }
 
-  var meetingOptions = new ZoomMeetingOptions(
-    userId: 'example',
-    meetingId: meetingIdController.text,
-    meetingPassword: meetingPasswordController.text,
-    disableDialIn: "true",
-    disableDrive: "true",
-    disableInvite: "true",
-    disableShare: "true",
-    noAudio: "false",
-    noDisconnectAudio: "false",
-    meetingViewOptions: ZoomMeetingOptions.NO_TEXT_PASSWORD +
-        ZoomMeetingOptions.NO_TEXT_MEETING_ID +
-        ZoomMeetingOptions.NO_BUTTON_PARTICIPANTS,
-  );
+//   ZoomOptions zoomOptions = ZoomOptions(
+//     domain: "zoom.us",
+//     appKey:
+//         "XKE4uWfeLwWEmh78YMbC6mqKcF8oM4YHTr9I", //API KEY FROM ZOOM -- SDK KEY
+//     appSecret:
+//         "bT7N61pQzaLXU6VLj9TVl7eYuLbqAiB0KAdb", //API SECRET FROM ZOOM -- SDK SECRET
+//   );
 
-  var zoom = Zoom();
-  zoom.init(zoomOptions).then((value) {
-    if (value[0] == 0) {
-      zoom.onMeetingStateChanged;
-      zoom
-          .startMeeting(meetingOptions)
-          .then((loginResult) {})
-          .catchError((error) {
-        print("[Error Generated] : " + error);
-      });
-    }
-  }).catchError((error) {
-    print("[Error Generated] : " + error);
-  });
-}
+//   var meetingOptions = new ZoomMeetingOptions(
+//     userId: 'example',
+//     meetingId: meetingIdController.text,
+//     meetingPassword: meetingPasswordController.text,
+//     disableDialIn: "true",
+//     disableDrive: "true",
+//     disableInvite: "true",
+//     disableShare: "true",
+//     noAudio: "false",
+//     noDisconnectAudio: "false",
+//     meetingViewOptions: ZoomMeetingOptions.NO_TEXT_PASSWORD +
+//         ZoomMeetingOptions.NO_TEXT_MEETING_ID +
+//         ZoomMeetingOptions.NO_BUTTON_PARTICIPANTS,
+//   );
+
+//   var zoom = Zoom();
+//   zoom.init(zoomOptions).then((value) {
+//     if (value[0] == 0) {
+//       zoom.onMeetingStateChanged;
+//       zoom
+//           .startMeeting(meetingOptions)
+//           .then((loginResult) {})
+//           .catchError((error) {
+//         print("[Error Generated] : " + error);
+//       });
+//     }
+//   }).catchError((error) {
+//     print("[Error Generated] : " + error);
+//   });
+// }
